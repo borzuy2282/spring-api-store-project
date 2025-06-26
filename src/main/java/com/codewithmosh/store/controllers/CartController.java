@@ -7,6 +7,9 @@ import com.codewithmosh.store.dtos.UpdateItemDto;
 import com.codewithmosh.store.exceptions.CartNotFoundException;
 import com.codewithmosh.store.exceptions.ProductNotFoundException;
 import com.codewithmosh.store.services.CartService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/carts")
+@Tag(name = "Carts")
 public class CartController {
     private final CartService cartService;
 
@@ -33,7 +37,9 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/items")
+    @Operation(summary = "Adds the product to the cart.")
     public ResponseEntity<CartItemDto> addItem(
+            @Parameter(description = "The ID of the cart")
             @PathVariable UUID cartId,
             @RequestBody AddItemToCartDto request
             ){
@@ -52,7 +58,9 @@ public class CartController {
 
     @PutMapping("/{cartId}/items/{productId}")
     public CartItemDto updateCartItem(
+            @Parameter(description = "The ID of the cart")
             @PathVariable UUID cartId,
+            @Parameter(description = "The ID of the product in the cart.")
             @PathVariable Long productId,
             @Valid @RequestBody UpdateItemDto request
             ){
@@ -61,7 +69,9 @@ public class CartController {
 
     @DeleteMapping("/{cartId}/items/{productId}")
     public ResponseEntity<Void> deleteCartItem(
+            @Parameter(description = "The ID of the cart")
             @PathVariable UUID cartId,
+            @Parameter(description = "The ID of the product in the cart.")
             @PathVariable Long productId
     ){
         cartService.deleteCartItem(cartId, productId);
@@ -70,6 +80,7 @@ public class CartController {
 
     @DeleteMapping("/{cartId}/items")
     public ResponseEntity<Void> clearCart(
+            @Parameter(description = "The ID of the cart")
             @PathVariable UUID cartId
     ){
         cartService.clearCart(cartId);
