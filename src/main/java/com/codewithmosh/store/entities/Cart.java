@@ -64,7 +64,11 @@ public class Cart {
     }
 
     public void clearCart(){
-        items.removeIf(item -> true); // removes all items
+        items.clear(); // removes all items
+    }
+
+    public boolean isEmpty(){
+        return items.isEmpty();
     }
 
 
