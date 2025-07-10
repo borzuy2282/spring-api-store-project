@@ -64,10 +64,7 @@ public class Cart {
     }
 
     public void clearCart(){
-        for (CartItem cartItem : items){
-            items.remove(cartItem);
-            cartItem.setCart(null);
-        }
+        items.removeIf(item -> true); // removes all items
     }
 
 
